@@ -1,0 +1,15 @@
+# Cache
+__pycache__/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# PyCharm
+.idea/
+
+# Visual Studio Code
+.vscode/
