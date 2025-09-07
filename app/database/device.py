@@ -1,4 +1,4 @@
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.models.device import Device
 from app.schemas.device import DeviceCreate
@@ -12,3 +12,6 @@ def create_device(db: Session, device: DeviceCreate):
     db.refresh(db_device)
 
     return db_device
+
+def read_devices(db: Session, skip: int = 0, limit: int = 100):
+    return db.exec(select(Device).offset(skip).limit(limit)).all()
