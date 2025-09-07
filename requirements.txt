@@ -1,5 +1,5 @@
 fastapi[standard]
-pydantic
+pydantic-settings
 sqlmodel
 alembic
 psycopg2-binary
