@@ -1,29 +1,28 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException
 
-from app.database.device import create_device, read_device, read_devices, remove_device, update_device
-from app.database.session import get_db
+from app.repository.device.device_sql_repository import DeviceSqlRepository
 from app.schemas.device import DeviceCreate, DeviceResponse, DeviceUpdate
 
 
 router = APIRouter()
+repository = DeviceSqlRepository()
 
 
 @router.post("/", response_model=DeviceResponse)
-async def post_device(device: DeviceCreate, db: Session = Depends(get_db)):
-    return create_device(db, device)
+async def post_device(device: DeviceCreate):
+    return repository.create_device(device)
 
 
 @router.get("/", response_model=List[DeviceResponse])
-async def get_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    devices = read_devices(db, skip=skip, limit=limit)
+async def get_devices(skip: int = 0, limit: int = 100):
+    devices = repository.read_devices(skip=skip, limit=limit)
     return devices
 
 
 @router.get("/{device_id}", response_model=DeviceResponse)
-async def get_device(device_id: int, db: Session = Depends(get_db)):
-    device = read_device(db, device_id)
+async def get_device(device_id: int):
+    device = repository.read_device(device_id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
     
@@ -31,16 +30,16 @@ async def get_device(device_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{device_id}", response_model=DeviceResponse)
-def put_device(device_id: int, device: DeviceUpdate, db: Session = Depends(get_db)):
-    db_device = update_device(db, device_id, device)
+def put_device(device_id: int, device: DeviceUpdate):
+    db_device = repository.update_device(device_id, device)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
     
     return db_device
 
 @router.delete("/{device_id}")
-def delete_device(device_id: int, db: Session = Depends(get_db)):
-    db_device = remove_device(db, device_id)
+def delete_device(device_id: int):
+    db_device = repository.remove_device(device_id)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
 
