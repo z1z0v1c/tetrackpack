@@ -33,5 +33,16 @@ def update_rack(db: Session, rack_id: int, rack: RackUpdate):
     db.add(db_rack)
     db.commit()
     db.refresh(db_rack)
+
+    return db_rack
+
+
+def remove_rack(db: Session, rack_id: int):
+    db_rack = read_rack(db, rack_id)
+    if not db_rack:
+        return None
     
+    db.delete(db_rack)
+    db.commit()
+
     return db_rack
