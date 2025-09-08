@@ -7,6 +7,7 @@ from alembic import context
 
 # Import your models and SQLModel metadata
 from app.models.device import Device
+from app.models.rack import Rack
 from sqlmodel import SQLModel
 
 # this is the Alembic Config object, which provides
