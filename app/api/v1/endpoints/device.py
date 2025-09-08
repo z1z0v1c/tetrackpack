@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
-from app.database.device import create_device, read_device, read_devices, update_device
+from app.database.device import create_device, read_device, read_devices, remove_device, update_device
 from app.database.session import get_db
 from app.schemas.device import DeviceCreate, DeviceResponse, DeviceUpdate
 
@@ -37,3 +37,11 @@ def put_device(device_id: int, device: DeviceUpdate, db: Session = Depends(get_d
         raise HTTPException(status_code=404, detail="Device not found")
     
     return db_device
+
+@router.delete("/{device_id}")
+def delete_device(device_id: int, db: Session = Depends(get_db)):
+    db_device = remove_device(db, device_id)
+    if not db_device:
+        raise HTTPException(status_code=404, detail="Device not found")
+
+    return {"message": "Device deleted successfully"}

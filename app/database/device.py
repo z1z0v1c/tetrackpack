@@ -36,3 +36,14 @@ def update_device(db: Session, device_id: int, device: DeviceUpdate):
     db.refresh(db_device)
 
     return db_device
+
+
+def remove_device(db: Session, device_id: int):
+    db_device = read_device(db, device_id)
+    if not db_device:
+        return None
+    
+    db.delete(db_device)
+    db.commit()
+
+    return db_device
