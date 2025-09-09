@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 
 from models.device_models import Device
-from repository.device.device_repository import DeviceRepository
+from repositories.device.device_repository import DeviceRepository
 
 class DeviceSqlRepository(DeviceRepository):
     def __init__(self, session: Session):

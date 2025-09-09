@@ -1,5 +1,5 @@
 from models.device_models import Device
-from repository.device.device_repository import DeviceRepository
+from repositories.device.device_repository import DeviceRepository
 from schemas.device_schemas import DeviceCreate, DeviceUpdate
 
 
