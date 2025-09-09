@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from models.db_models.device_model import Device
+from app.models.db_models.device_model import Device
 
 
 class DeviceRepository(ABC):

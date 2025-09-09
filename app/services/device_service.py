@@ -1,6 +1,6 @@
-from models.db_models.device_model import Device
-from repositories.device.device_repository import DeviceRepository
-from models.schemas.device_schemas import DeviceCreate, DeviceUpdate
+from app.models.db_models.device_model import Device
+from app.repositories.device.device_repository import DeviceRepository
+from app.models.schemas.device_schemas import DeviceCreate, DeviceUpdate
 
 
 class DeviceService:

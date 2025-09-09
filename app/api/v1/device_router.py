@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from services.device_service import DeviceService
-from injection import get_device_service
-from models.schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
+from app.services.device_service import DeviceService
+from app.injection import get_device_service
+from app.models.schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
 
 
 router = APIRouter()

@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from services.rack_service import RackService
-from injection import get_rack_service
-from models.schemas.rack_schemas import RackResponse, RackCreate, RackUpdate
+from app.services.rack_service import RackService
+from app.injection import get_rack_service
+from app.models.schemas.rack_schemas import RackResponse, RackCreate, RackUpdate
 
 
 router = APIRouter()

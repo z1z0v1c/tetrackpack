@@ -1,6 +1,6 @@
-from typing import Optional
-from sqlmodel import Field, SQLModel
-
+from datetime import datetime
+from typing import List, Optional
+from sqlmodel import Field, Relationship, SQLModel
 
 class Rack(SQLModel, table=True):
     """Devices in a data center are placed in a rack"""
@@ -13,3 +13,8 @@ class Rack(SQLModel, table=True):
     serial_number: str = Field(unique=True, index=True)
     number_of_units: int = Field(ge=1, description="Number of units the rack can support")
     max_power_consumption: int = Field(ge=5000, description="Maximum power consumption in watts")
+    total_power_conssumption: int = Field(default=0, description="Total power consumption in watts")
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    devices: List["Device"] = Relationship(back_populates="rack") # type: ignore

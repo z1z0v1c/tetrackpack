@@ -1,5 +1,9 @@
+from datetime import datetime
 from enum import Enum
-from sqlmodel import Field, SQLModel
+from typing import Optional
+from sqlmodel import Field, Relationship, SQLModel
+
+from app.models.db_models.rack_model import Rack
 
 
 class DeviceType(str, Enum):
@@ -22,3 +26,9 @@ class Device(SQLModel, table=True):
     number_of_units: int = Field(ge=1, description="Number of units it occupies in a rack (1+)")
     power_consumption: int = Field(ge=1, description="Power consumption in watts")
     device_type : DeviceType = Field(default=DeviceType.SERVER) 
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+    rack_id: Optional[int] = Field(default=None, foreign_key="racks.id")
+    rack: Optional[Rack] = Relationship(back_populates="devices")
+    
