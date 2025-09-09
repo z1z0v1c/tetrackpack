@@ -1,13 +1,11 @@
-from fastapi import Depends
 from sqlmodel import Session, select
 
 from app.models.device import Device
 from app.repository.device.device_repository import DeviceRepository
-from app.repository.session import get_session
 from app.schemas.device import DeviceCreate, DeviceUpdate
 
 class DeviceSqlRepository(DeviceRepository):
-    def __init__(self, session: Session = Depends(get_session)):
+    def __init__(self, session: Session):
         self.session = session
     
 
