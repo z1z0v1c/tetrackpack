@@ -13,6 +13,8 @@ class DeviceType(str, Enum):
 class Device(SQLModel, table=True):
     """Device represents servers, switches, etc."""
 
+    __tablename__ = "devices"
+
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     description: str | None = Field(default=None, max_length=1000)

@@ -6,8 +6,8 @@ from sqlalchemy import pool
 from alembic import context
 
 # Import your models and SQLModel metadata
-from app.models.device_models import Device
-from app.models.rack import Rack
+from app.models.db_models.device_model import Device
+from app.models.db_models.rack_model import Rack
 from sqlmodel import SQLModel
 
 # this is the Alembic Config object, which provides

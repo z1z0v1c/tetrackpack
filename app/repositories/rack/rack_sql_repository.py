@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 
-from models.rack import Rack
+from models.db_models.rack_model import Rack
 from repositories.rack.rack_repository import RackRepository
 
 

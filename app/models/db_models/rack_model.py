@@ -4,6 +4,8 @@ from sqlmodel import Field, SQLModel
 
 class Rack(SQLModel, table=True):
     """Devices in a data center are placed in a rack"""
+    
+    __tablename__ = "racks"
 
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)

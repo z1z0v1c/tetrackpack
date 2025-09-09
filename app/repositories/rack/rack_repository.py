@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from models.rack import Rack
+from models.db_models.rack_model import Rack
 
 class RackRepository(ABC):
     @abstractmethod

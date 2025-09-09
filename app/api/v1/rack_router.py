@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from services.rack_service import RackService
 from injection import get_rack_service
-from schemas.rack import RackResponse, RackCreate, RackUpdate
+from models.schemas.rack_schemas import RackResponse, RackCreate, RackUpdate
 
 
 router = APIRouter()

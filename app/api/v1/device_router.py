@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from services.device_service import DeviceService
 from injection import get_device_service
-from schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
+from models.schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
 
 
 router = APIRouter()
