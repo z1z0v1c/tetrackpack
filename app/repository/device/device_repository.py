@@ -1,29 +1,24 @@
 from abc import ABC, abstractmethod
 
-from schemas.device import DeviceCreate, DeviceUpdate
+from models.device_models import Device
 
 
 class DeviceRepository(ABC):
     @abstractmethod
-    def create_device(self, device: DeviceCreate):
+    def create_or_update(self, device: Device):
         pass
 
 
     @abstractmethod
-    def read_devices(self, skip: int = 0, limit: int = 100):
+    def get_all(self, skip: int, limit: int):
         pass
 
 
     @abstractmethod
-    def read_device(self, device_id: int):
+    def get_by_id(self, device_id: int):
         pass
 
 
     @abstractmethod
-    def update_device(self, device_id: int, device: DeviceUpdate):
-        pass
-
-
-    @abstractmethod
-    def remove_device(self, device_id: int):
+    def delete(self, device: Device):
         pass

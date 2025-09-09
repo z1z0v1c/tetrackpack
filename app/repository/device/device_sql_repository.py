@@ -1,54 +1,29 @@
 from sqlmodel import Session, select
 
-from models.device import Device
+from models.device_models import Device
 from repository.device.device_repository import DeviceRepository
-from schemas.device import DeviceCreate, DeviceUpdate
 
 class DeviceSqlRepository(DeviceRepository):
     def __init__(self, session: Session):
         self.session = session
     
 
-    def create_device(self, device: DeviceCreate):
-        db_device = Device(**device.model_dump())
-    
-        self.session.add(db_device)
+    def create_or_update(self, device: Device):
+        self.session.add(device)
         self.session.commit()
-        self.session.refresh(db_device)
+        self.session.refresh(device)
+
+        return device
     
-        return db_device
     
-    
-    def read_devices(self, skip: int = 0, limit: int = 100):
+    def get_all(self, skip: int, limit: int):
         return self.session.exec(select(Device).offset(skip).limit(limit)).all()
     
     
-    def read_device(self, device_id: int):
+    def get_by_id(self, device_id: int):
         return self.session.exec(select(Device).where(Device.id == device_id)).first()
     
     
-    def update_device(self, device_id: int, device: DeviceUpdate):
-        db_device = self.read_device(device_id)
-        if not db_device:
-            return None
-        
-        device_data = device.model_dump(exclude_unset=True)
-        for key, value in device_data.items():
-            setattr(db_device, key, value)
-        
-        self.session.add(db_device)
+    def delete(self, device: Device):
+        self.session.delete(device)
         self.session.commit()
-        self.session.refresh(db_device)
-    
-        return db_device
-    
-    
-    def remove_device(self, device_id: int):
-        db_device = self.read_device(device_id)
-        if not db_device:
-            return None
-        
-        self.session.delete(db_device)
-        self.session.commit()
-    
-        return db_device

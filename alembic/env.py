@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 # Import your models and SQLModel metadata
-from app.models.device import Device
+from app.models.device_models import Device
 from app.models.rack import Rack
 from sqlmodel import SQLModel
 

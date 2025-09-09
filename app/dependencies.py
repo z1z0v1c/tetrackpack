@@ -1,6 +1,8 @@
 from fastapi import Depends
 from sqlmodel import create_engine, Session
 
+from services.device_service import DeviceService
+from repository.device.device_repository import DeviceRepository
 from config import settings
 from repository.device.device_sql_repository import DeviceSqlRepository
 from repository.rack.rack_sql_repository import RackSqlRepository
@@ -20,3 +22,7 @@ def get_device_repository(db_session: Session = Depends(get_db_session)):
 
 def get_rack_repository(db_session: Session = Depends(get_db_session)):
     return RackSqlRepository(db_session)
+
+
+def get_device_service(repository: DeviceRepository = Depends(get_device_repository)):
+    return DeviceService(repository)
