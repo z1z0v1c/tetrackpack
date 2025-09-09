@@ -10,37 +10,37 @@ router = APIRouter()
 
 
 @router.post("/", response_model=DeviceResponse)
-async def post_device(device: DeviceCreate, service: DeviceService = Depends(get_device_service)):
+async def create_device(device: DeviceCreate, service: DeviceService = Depends(get_device_service)):
     return service.create_device(device)
 
 
 @router.get("/", response_model=List[DeviceResponse])
-async def get_devices(skip: int = 0, limit: int = 100, service: DeviceService = Depends(get_device_service)):
+async def get_all_devices(skip: int = 0, limit: int = 100, service: DeviceService = Depends(get_device_service)):
     devices = service.get_all_devices(skip, limit)
     return devices
 
 
-@router.get("/{device_id}", response_model=DeviceResponse)
-async def get_device(device_id: int, service: DeviceService = Depends(get_device_service)):
-    device = service.get_device(device_id)
+@router.get("/{id}", response_model=DeviceResponse)
+async def get_device_by_id(id: int, service: DeviceService = Depends(get_device_service)):
+    device = service.get_device(id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
     
     return device
 
 
-@router.put("/{device_id}", response_model=DeviceResponse)
-def put_device(device_id: int, device: DeviceUpdate, service: DeviceService = Depends(get_device_service)):
-    db_device = service.update_device(device_id, device)
+@router.put("/{id}", response_model=DeviceResponse)
+def update_device_by_id(id: int, device: DeviceUpdate, service: DeviceService = Depends(get_device_service)):
+    db_device = service.update_device(id, device)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
     
     return db_device
 
 
-@router.delete("/{device_id}")
-def delete_device(device_id: int, service: DeviceService = Depends(get_device_service)):
-    db_device = service.delete_device(device_id)
+@router.delete("/{id}")
+def delete_device_by_id(id: int, service: DeviceService = Depends(get_device_service)):
+    db_device = service.delete_device(id)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
 
