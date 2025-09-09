@@ -1,19 +1,20 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Data Center Infrastructure Management API"
-    API_V1_STR: str = "/api/v1"
-    
-    POSTGRES_SERVER: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
-    POSTGRES_PORT: str = "5432"
-    
+    PROJECT_DESC: str = "Data Center Infrastructure Management API"
+    API_ROUTE: str = "/api/v1"
+
+    DATABASE_DRIVER: str
+    DATABASE_SERVER: str
+    DATABASE_USER: str
+    DATABASE_PASSWORD: str
+    DATABASE_NAME: str
+    DATABASE_PORT: str = "5432"
+
     @property
     def DATABASE_URL(self):
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-    
+        return f"{self.DATABASE_DRIVER}://{self.DATABASE_USER}:{self.DATABASE_PASSWORD}@{self.DATABASE_SERVER}:{self.DATABASE_PORT}/{self.DATABASE_NAME}"
+
     class Config:
         env_file = ".env"
 
