@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.schemas.rack import RackCreate, RackUpdate
+from schemas.rack import RackCreate, RackUpdate
 
 
 class RackRepository(ABC):

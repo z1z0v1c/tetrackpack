@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.schemas.device import DeviceCreate, DeviceUpdate
+from schemas.device import DeviceCreate, DeviceUpdate
 
 
 class DeviceRepository(ABC):

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.api.v1.endpoints import device_router, rack_router
-from app.config import settings
+from api.v1 import device_router, rack_router
+from config import settings
 
 
 app = FastAPI()

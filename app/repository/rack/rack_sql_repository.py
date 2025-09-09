@@ -1,8 +1,8 @@
 from sqlmodel import Session, select
 
-from app.models.rack import Rack
-from app.repository.rack.rack_repository import RackRepository
-from app.schemas.rack import RackCreate, RackUpdate
+from models.rack import Rack
+from repository.rack.rack_repository import RackRepository
+from schemas.rack import RackCreate, RackUpdate
 
 
 class RackSqlRepository(RackRepository):

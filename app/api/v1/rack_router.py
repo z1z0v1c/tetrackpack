@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.repository.rack.rack_sql_repository import RackSqlRepository
-from app.repository.session import get_rack_repository
-from app.schemas.rack import RackResponse, RackCreate, RackUpdate
+from repository.rack.rack_sql_repository import RackSqlRepository
+from dependencies import get_rack_repository
+from schemas.rack import RackResponse, RackCreate, RackUpdate
 
 
 router = APIRouter()

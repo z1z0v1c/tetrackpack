@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.repository.device.device_sql_repository import DeviceSqlRepository
-from app.repository.session import get_device_repository
-from app.schemas.device import DeviceCreate, DeviceResponse, DeviceUpdate
+from repository.device.device_sql_repository import DeviceSqlRepository
+from dependencies import get_device_repository
+from schemas.device import DeviceCreate, DeviceResponse, DeviceUpdate
 
 
 router = APIRouter()

@@ -1,17 +1,17 @@
 from fastapi import Depends
 from sqlmodel import create_engine, Session
 
-from app.config import settings
-from app.repository.device.device_sql_repository import DeviceSqlRepository
-from app.repository.rack.rack_sql_repository import RackSqlRepository
+from config import settings
+from repository.device.device_sql_repository import DeviceSqlRepository
+from repository.rack.rack_sql_repository import RackSqlRepository
 
 
 engine = create_engine(settings.DATABASE_URL, echo=True)
 
 
 def get_db_session():
-    with Session(engine) as session:
-        yield session
+    with Session(engine) as db_session:
+        yield db_session
 
 
 def get_device_repository(db_session: Session = Depends(get_db_session)):
