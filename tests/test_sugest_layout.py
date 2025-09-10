@@ -61,8 +61,8 @@ async def test_suggest_layout_missing_devices(rack_service, mock_rack_repository
 async def test_suggest_layout_units_constraint(rack_service, mock_rack_repository, mock_device_repository):
     small_rack = [Rack(id=1, name="Small Rack", number_of_units=3, max_power_consumption=5000)]
     devices = [
-        Device(id=1, name="Big Device", number_of_units=2, power_consumption=500),
-        Device(id=2, name="Bigger Device", number_of_units=2, power_consumption=500),
+        Device(id=1, name="Device A", number_of_units=2, power_consumption=500),
+        Device(id=2, name="Device B", number_of_units=2, power_consumption=600),
     ]
     
     mock_rack_repository.get_by_ids.return_value = small_rack
@@ -71,4 +71,20 @@ async def test_suggest_layout_units_constraint(rack_service, mock_rack_repositor
     result = await rack_service.suggest_layout([1], [1, 2])
     
     assert len(result.layout[0].devices) == 1
-    assert result.layout[0].devices[0] in [1, 2]
+    assert result.layout[0].devices[0] == 2
+
+@pytest.mark.asyncio
+async def test_suggest_layout_power_constraint(rack_service, mock_rack_repository, mock_device_repository):
+    small_racks = [Rack(id=1, name="Small Rack", number_of_units=10, max_power_consumption=1000)]
+    devices = [
+        Device(id=1, name="Device A", number_of_units=2, power_consumption=800),
+        Device(id=2, name="Device B", number_of_units=2, power_consumption=900),
+    ]
+    
+    mock_rack_repository.get_by_ids.return_value = small_racks
+    mock_device_repository.get_by_ids.return_value = devices
+    
+    result = await rack_service.suggest_layout([1], [1, 2])
+    
+    assert len(result.layout[0].devices) == 1
+    assert result.layout[0].devices[0] == 2
