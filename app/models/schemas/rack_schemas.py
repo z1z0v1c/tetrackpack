@@ -1,5 +1,5 @@
-from typing import List, Optional
-from pydantic import BaseModel, ConfigDict
+from typing import Annotated, List, Optional
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.entities import RackEntity
 
@@ -8,8 +8,8 @@ class RackCreateRequest(BaseModel):
     name: str
     description: Optional[str] = None
     serial_number: str
-    number_of_units: int
-    max_power_consumption: int
+    number_of_units: Annotated[int, Field(ge=24)]
+    max_power_consumption: Annotated[int, Field(ge=5000)]
 
     def to_entity(self) -> RackEntity:
         return RackEntity(**self.model_dump())
@@ -19,8 +19,8 @@ class RackUpdateRequest(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     serial_number: Optional[str] = None
-    number_of_units: Optional[int] = None
-    max_power_consumption: Optional[int] = None
+    number_of_units: Annotated[Optional[int], Field(ge=24)] = None
+    max_power_consumption: Annotated[Optional[int], Field(ge=5000)] = None
 
     def to_entity(self) -> RackEntity:
         return RackEntity(**self.model_dump())
