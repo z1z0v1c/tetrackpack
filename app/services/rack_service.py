@@ -56,7 +56,7 @@ class RackService:
         device_model.rack_id = rack_model.id
         return await self.device_repository.update(device_model)
 
-    async def sugest_layout(self, rack_ids: List[int], device_ids: List[int]):
+    async def suggest_layout(self, rack_ids: List[int], device_ids: List[int]):
         racks = await self.rack_repository.get_by_ids(rack_ids)
         devices = await self.device_repository.get_by_ids(device_ids)
 
@@ -100,7 +100,7 @@ class RackService:
                     utilization=round(utilization, 2)
                 ))
     
-        return RackLayoutsResponse(layouts=layouts)
+        return RackLayoutsResponse(layout=layouts)
 
     async def delete_rack(self, rack_id: int):
         db_model = await self.rack_repository.get_by_id(rack_id)

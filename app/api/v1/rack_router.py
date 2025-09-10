@@ -16,11 +16,11 @@ async def create_rack(
     return await service.create_rack(rack)
 
 @router.post("/layout", response_model=RackLayoutsResponse)
-async def sugest_layout(
+async def suggest_layout(
     data: RackLayoutRequest, service: RackService = Depends(get_rack_service)
 ):
     try:
-        layout = await service.sugest_layout(data.rack_ids, data.device_ids)
+        layout = await service.suggest_layout(data.rack_ids, data.device_ids)
     except Exception as ex:
         raise HTTPException(status_code=400, detail=f"{ex}")
 
