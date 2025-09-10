@@ -19,11 +19,12 @@ async def create_rack(
 async def sugest_layout(
     data: RackLayoutRequest, service: RackService = Depends(get_rack_service)
 ):
-    layout = await service.sugest_layout(data.rack_ids, data.device_ids)
-    if None:
-        raise HTTPException(status_code=500, detail="Not implemented")
-    
-    return RackLayoutsResponse()
+    try:
+        layout = await service.sugest_layout(data.rack_ids, data.device_ids)
+    except Exception as ex:
+        raise HTTPException(status_code=400, detail=f"{ex}")
+
+    return layout
 
 @router.get("/", response_model=List[RackResponse])
 async def get_all_racks(
@@ -58,8 +59,8 @@ async def place_device(
 ):
     try:
         device = await service.place_device(id, device_id)
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=f"{error}")
+    except Exception as ex:
+        raise HTTPException(status_code=400, detail=f"{ex}")
 
     if not device:
         raise HTTPException(status_code=404, detail="Rack or device not found")

@@ -48,4 +48,4 @@ class RackLayoutResponse(BaseModel):
     utilization: float  # percentage 0.0 - 100.0
 
 class RackLayoutsResponse(BaseModel):
-    layout: List[RackLayoutResponse]
+    layouts: List[RackLayoutResponse]
