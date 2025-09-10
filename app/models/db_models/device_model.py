@@ -8,11 +8,11 @@ from app.models.db_models.rack_model import Rack
 
 
 class DeviceType(str, Enum):
-    SERVER = 0
-    SWITCH = 1
-    ROUTER = 2
-    STORAGE = 3
-    OTHER = 4
+    SERVER = "server"
+    SWITCH = "switch"
+    ROUTER = "router"
+    STORAGE = "storage"
+    OTHER = "other"
 
 
 class Device(SQLModel, table=True):

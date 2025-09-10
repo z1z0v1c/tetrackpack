@@ -1,7 +1,16 @@
+from enum import Enum
 from pydantic import BaseModel
 from typing import Optional
 
 from app.entities import DeviceEntity
+
+
+class DeviceType(str, Enum):
+    SERVER = "server"
+    SWITCH = "switch"
+    ROUTER = "router"
+    STORAGE = "storage"
+    OTHER = "other"
 
 
 class DeviceBase(BaseModel):
@@ -10,7 +19,7 @@ class DeviceBase(BaseModel):
     serial_number: str
     number_of_units: int
     power_consumption: int
-    device_type: str
+    device_type: DeviceType
 
 
 class DeviceCreate(DeviceBase):
