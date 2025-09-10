@@ -1,45 +1,43 @@
 from app.models.db_models.device_model import Device
 from app.repositories.device.device_repository import DeviceRepository
-from app.models.schemas.device_schemas import DeviceCreate, DeviceUpdate
+from app.models.schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
 
 
 class DeviceService:
     def __init__(self, repository: DeviceRepository):
         self.repository = repository
 
-
     def get_all_devices(self, skip: int, limit: int):
-        return self.repository.get_all(skip, limit)
+        db_models = self.repository.get_all(skip, limit)
+        return [
+            DeviceResponse.from_entity(db_model.to_entity()) for db_model in db_models
+        ]
 
-    
-    def get_device(self, device_id: int):
-        return self.repository.get_by_id(device_id)
+    def get_device(self, id: int):
+        db_model = self.repository.get_by_id(id)
+        return DeviceResponse.from_entity(db_model.to_entity())
 
-    
-    def create_device(self, device: DeviceCreate):
-        db_device = Device(**device.model_dump())
+    def create_device(self, data: DeviceCreate):
+        db_model = Device.from_entity(data.to_entity())
+        return self.repository.create_or_update(db_model)
 
-        return self.repository.create_or_update(db_device)
-    
-
-    def update_device(self, device_id: int, device: DeviceUpdate):
-        db_device = self.repository.get_by_id(device_id)
-        if not db_device:
+    def update_device(self, id: int, data: DeviceUpdate):
+        db_model = self.repository.get_by_id(id)
+        if not db_model:
             return None
-        
-        device_data = device.model_dump(exclude_unset=True)
+
+        # skip conversion to entity for now
+        device_data = data.model_dump(exclude_unset=True)
         for key, value in device_data.items():
-            setattr(db_device, key, value)
+            setattr(db_model, key, value)
 
-        return self.repository.create_or_update(db_device)
-    
-    
-    def delete_device(self, device_id: int):
-        db_device = self.repository.get_by_id(device_id)
-        if not db_device:
+        return self.repository.create_or_update(db_model)
+
+    def delete_device(self, id: int):
+        db_model = self.repository.get_by_id(id)
+        if not db_model:
             return None
-        
-        self.repository.delete(db_device)
 
-        return db_device
-        
+        self.repository.delete(db_model)
+
+        return db_model

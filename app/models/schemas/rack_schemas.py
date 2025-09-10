@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel
 
+from app.entities.rack_entity import RackEntity
+
 
 class RackBase(BaseModel):
     name: str
@@ -11,7 +13,8 @@ class RackBase(BaseModel):
 
 
 class RackCreate(RackBase):
-    pass
+    def to_entity(self) -> RackEntity:
+        return RackEntity(**self.model_dump())
 
 
 class RackUpdate(BaseModel):
@@ -20,10 +23,16 @@ class RackUpdate(BaseModel):
     serial_number: Optional[str] = None
     number_of_units: Optional[int] = None
     max_power_consumption: Optional[int] = None
-
+    
+    def to_entity(self) -> RackEntity:
+        return RackEntity(**self.model_dump())
 
 class RackResponse(RackBase):
     id: int
+
+    @classmethod
+    def from_entity(cls, entity: RackEntity):
+        return cls(**entity.__dict__)
     
     class Config:
         orm_mode = True
