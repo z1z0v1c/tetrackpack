@@ -29,8 +29,8 @@ class DeviceUpdateRequest(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     serial_number: Optional[str] = None
-    number_of_units: Optional[int] = None
-    power_consumption: Optional[int] = None
+    number_of_units: Annotated[Optional[int], Field(ge=1)] = None
+    power_consumption: Annotated[Optional[int], Field(ge=10)] = None
 
     def to_entity(self) -> DeviceEntity:
         return DeviceEntity(**self.model_dump())

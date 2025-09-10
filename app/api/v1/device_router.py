@@ -53,7 +53,11 @@ async def update_device_by_id(
     device: DeviceUpdateRequest,
     service: DeviceService = Depends(get_device_service),
 ):
-    device_id = await service.update_device(id, device)
+    try:
+        device_id = await service.update_device(id, device)
+    except DatabaseError as error:
+        raise HTTPException(status_code=400, detail=f"{error}")
+    
     if not device_id:
         raise HTTPException(status_code=404, detail="Device not found")
 
