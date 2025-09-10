@@ -46,6 +46,11 @@ class RackFullResponse(BaseModel):
         return cls(**entity.__dict__)
 
 
+class RackSimpleResponse(BaseModel):
+    id: int
+    detail: str
+
+
 class RackLayoutResponse(BaseModel):
     rack_id: int
     devices: List[int]

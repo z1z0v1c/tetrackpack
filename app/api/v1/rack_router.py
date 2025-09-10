@@ -1,10 +1,12 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.exceptions import DatabaseError
 from app.services import RackService
 from app.injection import get_rack_service
 from app.models.schemas import (
     RackFullResponse,
+    RackSimpleResponse,
     RackLayoutsResponse,
     RackCreateRequest,
     RackUpdateRequest,
@@ -15,11 +17,16 @@ from app.models.schemas import (
 router = APIRouter()
 
 
-@router.post("/", response_model=RackFullResponse)
+@router.post("/", response_model=RackSimpleResponse)
 async def create_rack(
-    rack: RackCreateRequest, service: RackService = Depends(get_rack_service)
+    data: RackCreateRequest, service: RackService = Depends(get_rack_service)
 ):
-    return await service.create_rack(rack)
+    try:
+        rack_id = await service.create_rack(data)
+    except DatabaseError as error:
+        raise HTTPException(status_code=400, detail=f"{error}")
+
+    return {"id": rack_id, "detail": "Device created successfully"}
 
 
 @router.post("/layout", response_model=RackLayoutsResponse)
