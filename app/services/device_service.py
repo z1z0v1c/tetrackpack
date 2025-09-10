@@ -1,6 +1,10 @@
 from app.models.db_models import Device
 from app.repositories import DeviceRepository
-from app.models.schemas import DeviceCreateRequest, DeviceFullResponse, DeviceUpdateRequest
+from app.models.schemas import (
+    DeviceCreateRequest,
+    DeviceFullResponse,
+    DeviceUpdateRequest,
+)
 
 
 class DeviceService:
@@ -9,12 +13,13 @@ class DeviceService:
 
     async def get_all_devices(self, skip: int, limit: int):
         db_models = await self.repository.get_all(skip, limit)
-        return [
-            DeviceFullResponse.model_validate(db_model) for db_model in db_models
-        ]
+        return [DeviceFullResponse.model_validate(db_model) for db_model in db_models]
 
     async def get_device(self, id: int):
         db_model = await self.repository.get_by_id(id)
+        if not db_model:
+            return None
+
         return DeviceFullResponse.model_validate(db_model)
 
     async def create_device(self, data: DeviceCreateRequest):
@@ -38,4 +43,3 @@ class DeviceService:
             return None
 
         return await self.repository.delete(db_model)
-
