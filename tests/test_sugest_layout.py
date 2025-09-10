@@ -45,3 +45,14 @@ async def test_suggest_layout_missing_racks(rack_service, mock_rack_repository, 
     
     assert "Some racks not found" in str(ex.value)
     assert ex.type is Exception
+
+@pytest.mark.asyncio
+async def test_suggest_layout_missing_devices(rack_service, mock_rack_repository, mock_device_repository, sample_racks, sample_devices):
+    mock_rack_repository.get_by_ids.return_value = sample_racks
+    mock_device_repository.get_by_ids.return_value = sample_devices[:3]
+    
+    with pytest.raises(Exception) as ex:
+        await rack_service.suggest_layout([1, 2, 3, 4], [1, 2, 3, 4, 5, 6, 7])
+    
+    assert "Some devices not found" in str(ex.value)
+    assert ex.type is Exception
