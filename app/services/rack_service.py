@@ -7,22 +7,22 @@ class RackService:
     def __init__(self, repository: RackRepository):
         self.repository = repository
 
-    def create_rack(self, data: RackCreate):
+    async def create_rack(self, data: RackCreate):
         db_model = Rack.from_entity(data.to_entity())
-        return self.repository.create_or_update(db_model)
+        return await self.repository.create_or_update(db_model)
 
-    def get_all_racks(self, skip: int, limit: int):
-        db_models = self.repository.get_all(skip, limit)
+    async def get_all_racks(self, skip: int, limit: int):
+        db_models = await self.repository.get_all(skip, limit)
         return [
             RackResponse.from_entity(db_model.to_entity()) for db_model in db_models
         ]
 
-    def get_rack(self, id: int):
-        db_model = self.repository.get_by_id(id)
+    async def get_rack(self, id: int):
+        db_model = await self.repository.get_by_id(id)
         return RackResponse.from_entity(db_model.to_entity())
 
-    def update_rack(self, rack_id: int, data: RackUpdate):
-        db_model = self.repository.get_by_id(rack_id)
+    async def update_rack(self, rack_id: int, data: RackUpdate):
+        db_model = await self.repository.get_by_id(rack_id)
         if not db_model:
             return None
 
@@ -31,13 +31,13 @@ class RackService:
         for key, value in rack_data.items():
             setattr(db_model, key, value)
 
-        return self.repository.create_or_update(db_model)
+        return await self.repository.create_or_update(db_model)
 
-    def delete_rack(self, rack_id: int):
-        db_model = self.repository.get_by_id(rack_id)
+    async def delete_rack(self, rack_id: int):
+        db_model = await self.repository.get_by_id(rack_id)
         if not db_model:
             return None
 
-        self.repository.delete(db_model)
+        await self.repository.delete(db_model)
 
         return db_model

@@ -13,7 +13,7 @@ router = APIRouter()
 async def create_device(
     data: DeviceCreate, service: DeviceService = Depends(get_device_service)
 ):
-    return service.create_device(data)
+    return await service.create_device(data)
 
 
 @router.get("/", response_model=List[DeviceResponse])
@@ -22,15 +22,14 @@ async def get_all_devices(
     limit: int = 100,
     service: DeviceService = Depends(get_device_service),
 ):
-    devices = service.get_all_devices(skip, limit)
-    return devices
+    return await service.get_all_devices(skip, limit)
 
 
 @router.get("/{id}", response_model=DeviceResponse)
 async def get_device_by_id(
     id: int, service: DeviceService = Depends(get_device_service)
 ):
-    device = service.get_device(id)
+    device = await service.get_device(id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
 
@@ -38,10 +37,10 @@ async def get_device_by_id(
 
 
 @router.put("/{id}", response_model=int)
-def update_device_by_id(
+async def update_device_by_id(
     id: int, device: DeviceUpdate, service: DeviceService = Depends(get_device_service)
 ):
-    db_device = service.update_device(id, device)
+    db_device = await service.update_device(id, device)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
 
@@ -49,8 +48,8 @@ def update_device_by_id(
 
 
 @router.delete("/{id}")
-def delete_device_by_id(id: int, service: DeviceService = Depends(get_device_service)):
-    db_device = service.delete_device(id)
+async def delete_device_by_id(id: int, service: DeviceService = Depends(get_device_service)):
+    db_device = await service.delete_device(id)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")
 

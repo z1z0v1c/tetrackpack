@@ -7,22 +7,22 @@ class DeviceService:
     def __init__(self, repository: DeviceRepository):
         self.repository = repository
 
-    def get_all_devices(self, skip: int, limit: int):
-        db_models = self.repository.get_all(skip, limit)
+    async def get_all_devices(self, skip: int, limit: int):
+        db_models = await self.repository.get_all(skip, limit)
         return [
             DeviceResponse.from_entity(db_model.to_entity()) for db_model in db_models
         ]
 
-    def get_device(self, id: int):
-        db_model = self.repository.get_by_id(id)
+    async def get_device(self, id: int):
+        db_model = await self.repository.get_by_id(id)
         return DeviceResponse.from_entity(db_model.to_entity())
 
-    def create_device(self, data: DeviceCreate):
+    async def create_device(self, data: DeviceCreate):
         db_model = Device.from_entity(data.to_entity())
-        return self.repository.create_or_update(db_model)
+        return await self.repository.create_or_update(db_model)
 
-    def update_device(self, id: int, data: DeviceUpdate):
-        db_model = self.repository.get_by_id(id)
+    async def update_device(self, id: int, data: DeviceUpdate):
+        db_model = await self.repository.get_by_id(id)
         if not db_model:
             return None
 
@@ -31,13 +31,13 @@ class DeviceService:
         for key, value in device_data.items():
             setattr(db_model, key, value)
 
-        return self.repository.create_or_update(db_model)
+        return await self.repository.create_or_update(db_model)
 
-    def delete_device(self, id: int):
-        db_model = self.repository.get_by_id(id)
+    async def delete_device(self, id: int):
+        db_model = await self.repository.get_by_id(id)
         if not db_model:
             return None
 
-        self.repository.delete(db_model)
+        await self.repository.delete(db_model)
 
         return db_model

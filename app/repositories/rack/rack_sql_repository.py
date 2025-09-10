@@ -9,22 +9,24 @@ class RackSqlRepository(RackRepository):
         self.session = session
 
 
-    def create_or_update(self, rack: Rack):
+    async def create_or_update(self, rack: Rack):
         self.session.add(rack)
-        self.session.commit()
-        self.session.refresh(rack)
+        await self.session.commit()
+        await self.session.refresh(rack)
 
         return rack
 
 
-    def get_all(self, skip: int, limit: int):
-        return self.session.exec(select(Rack).offset(skip).limit(limit)).all()
+    async def get_all(self, skip: int, limit: int):
+        racks = await self.session.exec(select(Rack).offset(skip).limit(limit))
+        return racks.all()
 
 
-    def get_by_id(self, rack_id: int):
-        return self.session.exec(select(Rack).where(Rack.id == rack_id)).first()
+    async def get_by_id(self, rack_id: int):
+        racks = await self.session.exec(select(Rack).where(Rack.id == rack_id))
+        return racks.first()
 
 
-    def delete(self, rack: Rack):
-        self.session.delete(rack)
-        self.session.commit()
+    async def delete(self, rack: Rack):
+        await self.session.delete(rack)
+        await self.session.commit()

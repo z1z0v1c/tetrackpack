@@ -1,5 +1,6 @@
 from fastapi import Depends
-from sqlmodel import create_engine, Session
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.repositories.rack.rack_repository import RackRepository
 from app.services.rack_service import RackService
@@ -10,19 +11,19 @@ from app.repositories.device.device_sql_repository import DeviceSqlRepository
 from app.repositories.rack.rack_sql_repository import RackSqlRepository
 
 
-engine = create_engine(settings.DATABASE_URL, echo=True)
+engine = create_async_engine(settings.DATABASE_URL, echo=True)
 
 
-def get_db_session():
-    with Session(engine) as db_session:
+async def get_db_session():
+    async with AsyncSession(engine) as db_session:
         yield db_session
 
 
-def get_device_repository(db_session: Session = Depends(get_db_session)):
+def get_device_repository(db_session: AsyncSession = Depends(get_db_session)):
     return DeviceSqlRepository(db_session)
 
 
-def get_rack_repository(db_session: Session = Depends(get_db_session)):
+def get_rack_repository(db_session: AsyncSession = Depends(get_db_session)):
     return RackSqlRepository(db_session)
 
 
