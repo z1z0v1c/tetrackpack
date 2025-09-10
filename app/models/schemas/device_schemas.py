@@ -1,6 +1,6 @@
 from enum import Enum
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import Annotated, Optional
 
 from app.entities import DeviceEntity
 
@@ -17,8 +17,8 @@ class DeviceBase(BaseModel):
     name: str
     description: Optional[str] = None
     serial_number: str
-    number_of_units: int
-    power_consumption: int
+    number_of_units: Annotated[int, Field(ge=1)]
+    power_consumption: Annotated[int, Field(ge=10)]
     device_type: DeviceType
 
 
