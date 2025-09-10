@@ -1,8 +1,5 @@
 import pytest
-from fastapi import HTTPException
-from unittest.mock import AsyncMock
 from app.models.db_models import Rack, Device, DeviceType
-from app.models.schemas import RackLayoutsResponse, RackLayoutsResponse
 
 @pytest.fixture
 def sample_racks():
@@ -37,3 +34,14 @@ async def test_suggest_layout_single_rack(rack_service, mock_rack_repository, mo
     
     assert len(result.layout) == 1
     assert set(result.layout[0].devices) == {1, 2, 3}
+
+@pytest.mark.asyncio
+async def test_suggest_layout_missing_racks(rack_service, mock_rack_repository, mock_device_repository, sample_racks, sample_devices):
+    mock_rack_repository.get_by_ids.return_value = sample_racks[:2]
+    mock_device_repository.get_by_ids.return_value = sample_devices
+    
+    with pytest.raises(Exception) as ex:
+        await rack_service.suggest_layout([1, 2, 3, 4], [1, 2, 3, 4, 5, 6, 7])
+    
+    assert "Some racks not found" in str(ex.value)
+    assert ex.type is Exception
