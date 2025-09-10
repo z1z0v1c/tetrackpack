@@ -1,6 +1,7 @@
+from typing import List
 from app.models.db_models import Rack
 from app.repositories import RackRepository, DeviceRepository
-from app.models.schemas import RackCreate, RackResponse, RackUpdate
+from app.models.schemas import RackCreateRequest, RackResponse, RackUpdateRequest
 
 
 class RackService:
@@ -8,7 +9,7 @@ class RackService:
         self.rack_repository = rack_repository
         self.device_repository = device_repository
 
-    async def create_rack(self, data: RackCreate):
+    async def create_rack(self, data: RackCreateRequest):
         db_model = Rack.from_entity(data.to_entity())
         return await self.rack_repository.create_or_update(db_model)
 
@@ -22,7 +23,7 @@ class RackService:
         db_model = await self.rack_repository.get_by_id(id)
         return RackResponse.from_entity(db_model.to_entity())
 
-    async def update_rack(self, rack_id: int, data: RackUpdate):
+    async def update_rack(self, rack_id: int, data: RackUpdateRequest):
         db_model = await self.rack_repository.get_by_id(rack_id)
         if not db_model:
             return None
@@ -51,6 +52,9 @@ class RackService:
 
         device_model.rack_id = rack_model.id
         return await self.device_repository.update(device_model)
+
+    async def sugest_layout(self, ids: List[int], device_ids: List[int]):
+        return None
 
     async def delete_rack(self, rack_id: int):
         db_model = await self.rack_repository.get_by_id(rack_id)

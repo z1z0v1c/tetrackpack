@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.services import RackService
 from app.injection import get_rack_service
-from app.models.schemas import RackResponse, RackCreate, RackUpdate
+from app.models.schemas import RackResponse, RackLayoutsResponse, RackCreateRequest, RackUpdateRequest, RackLayoutRequest
 
 
 router = APIRouter()
@@ -11,10 +11,19 @@ router = APIRouter()
 
 @router.post("/", response_model=RackResponse)
 async def create_rack(
-    rack: RackCreate, service: RackService = Depends(get_rack_service)
+    rack: RackCreateRequest, service: RackService = Depends(get_rack_service)
 ):
     return await service.create_rack(rack)
 
+@router.post("/layout", response_model=RackLayoutsResponse)
+async def sugest_layout(
+    data: RackLayoutRequest, service: RackService = Depends(get_rack_service)
+):
+    layout = await service.sugest_layout(data.rack_ids, data.device_ids)
+    if None:
+        raise HTTPException(status_code=500, detail="Not implemented")
+    
+    return RackLayoutsResponse()
 
 @router.get("/", response_model=List[RackResponse])
 async def get_all_racks(
@@ -34,7 +43,7 @@ async def get_rack_by_id(id: int, service: RackService = Depends(get_rack_servic
 
 @router.put("/{id}", response_model=RackResponse)
 async def update_rack_by_id(
-    id: int, rack: RackUpdate, service: RackService = Depends(get_rack_service)
+    id: int, rack: RackUpdateRequest, service: RackService = Depends(get_rack_service)
 ):
     db_rack = await service.update_rack(id, rack)
     if not db_rack:

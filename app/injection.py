@@ -32,5 +32,8 @@ def get_device_service(repository: DeviceRepository = Depends(get_device_reposit
     return DeviceService(repository)
 
 
-def get_rack_service(rack_repository: RackRepository = Depends(get_rack_repository), device_repository: DeviceRepository = Depends(get_device_repository)):
+def get_rack_service(
+    rack_repository: RackRepository = Depends(get_rack_repository),
+    device_repository: DeviceRepository = Depends(get_device_repository),
+):
     return RackService(rack_repository, device_repository)
