@@ -57,15 +57,19 @@ async def get_rack_by_id(id: int, service: RackService = Depends(get_rack_servic
     return rack
 
 
-@router.put("/{id}", response_model=RackFullResponse)
+@router.put("/{id}", response_model=RackSimpleResponse)
 async def update_rack_by_id(
-    id: int, rack: RackUpdateRequest, service: RackService = Depends(get_rack_service)
+    id: int, data: RackUpdateRequest, service: RackService = Depends(get_rack_service)
 ):
-    db_rack = await service.update_rack(id, rack)
-    if not db_rack:
+    try:
+        rack_id = await service.update_rack(id, data)
+    except DatabaseError as error:
+        raise HTTPException(status_code=400, detail=f"{error}")
+    
+    if not rack_id:
         raise HTTPException(status_code=404, detail="Rack not found")
 
-    return db_rack
+    return {"id": rack_id, "detail": "Rack updated successfully"}
 
 
 @router.put("/{id}/place/{device_id}")
@@ -83,10 +87,10 @@ async def place_device(
     return {"message": "Device placed successfully"}
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_model=RackSimpleResponse)
 async def delete_rack_by_id(id: int, service: RackService = Depends(get_rack_service)):
-    db_rack = await service.delete_rack(id)
-    if not db_rack:
+    rack_id = await service.delete_rack(id)
+    if not rack_id:
         raise HTTPException(status_code=404, detail="Rack not found")
 
-    return {"message": "Rack deleted successfully"}
+    return {"id": rack_id, "detail": "Rack deleted successfully"}

@@ -37,3 +37,5 @@ class RackSqlRepository(RackRepository):
     async def delete(self, rack: Rack):
         await self.session.delete(rack)
         await self.session.commit()
+
+        return rack.id
