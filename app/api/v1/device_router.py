@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.exceptions import DatabaseError
 from app.injection import get_device_service
 from app.models.schemas import DeviceCreate, DeviceResponse, DeviceUpdate
 from app.services import DeviceService
@@ -13,8 +14,12 @@ router = APIRouter()
 async def create_device(
     data: DeviceCreate, service: DeviceService = Depends(get_device_service)
 ):
-    return await service.create_device(data)
-
+    try:
+        id = await service.create_device(data)
+    except DatabaseError as error:
+        raise HTTPException(status_code=400, detail=f"{error}")
+    
+    return id
 
 @router.get("/", response_model=List[DeviceResponse])
 async def get_all_devices(
