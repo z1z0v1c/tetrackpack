@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-from app.entities.device_entity import DeviceEntity
+from app.entities import DeviceEntity
 
 
 class DeviceBase(BaseModel):

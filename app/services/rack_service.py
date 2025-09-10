@@ -1,6 +1,6 @@
-from app.models.db_models.rack_model import Rack
-from app.repositories.rack.rack_repository import RackRepository
-from app.models.schemas.rack_schemas import RackCreate, RackResponse, RackUpdate
+from app.models.db_models import Rack
+from app.repositories import RackRepository
+from app.models.schemas import RackCreate, RackResponse, RackUpdate
 
 
 class RackService:

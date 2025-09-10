@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from app.entities.device_entity import DeviceEntity
+from app.entities import DeviceEntity
 
 
 @dataclass

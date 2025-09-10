@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
-from app.entities.rack_entity import RackEntity
+from app.entities import RackEntity
 
 
 class Rack(SQLModel, table=True):

@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.services.device_service import DeviceService
 from app.injection import get_device_service
-from app.models.schemas.device_schemas import DeviceCreate, DeviceResponse, DeviceUpdate
+from app.models.schemas import DeviceCreate, DeviceResponse, DeviceUpdate
+from app.services import DeviceService
 
 
 router = APIRouter()
@@ -48,7 +48,9 @@ async def update_device_by_id(
 
 
 @router.delete("/{id}")
-async def delete_device_by_id(id: int, service: DeviceService = Depends(get_device_service)):
+async def delete_device_by_id(
+    id: int, service: DeviceService = Depends(get_device_service)
+):
     db_device = await service.delete_device(id)
     if not db_device:
         raise HTTPException(status_code=404, detail="Device not found")

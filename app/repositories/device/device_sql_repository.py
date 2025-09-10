@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 
-from app.models.db_models.device_model import Device
-from app.repositories.device.device_repository import DeviceRepository
+from app.models.db_models import Device
+from app.repositories import DeviceRepository
 
 
 class DeviceSqlRepository(DeviceRepository):
