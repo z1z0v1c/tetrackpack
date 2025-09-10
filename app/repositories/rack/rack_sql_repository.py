@@ -9,7 +9,7 @@ class RackSqlRepository(RackRepository):
         self.session = session
 
     async def create_or_update(self, rack: Rack):
-        self.session.add(rack)
+        self.session.add(rack) # not awaitable
         await self.session.commit()
         await self.session.refresh(rack)
 

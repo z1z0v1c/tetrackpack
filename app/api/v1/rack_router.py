@@ -43,6 +43,20 @@ async def update_rack_by_id(
     return db_rack
 
 
+@router.put("/{id}/place/{device_id}")
+async def place_device(
+    id: int, device_id: int, service: RackService = Depends(get_rack_service)
+):
+    try:
+        device = await service.place_device(id, device_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=f"{error}")
+
+    if not device:
+        raise HTTPException(status_code=404, detail="Rack or device not found")
+    
+    return {"message": "Device placed successfully"}
+
 @router.delete("/{id}")
 async def delete_rack_by_id(id: int, service: RackService = Depends(get_rack_service)):
     db_rack = await service.delete_rack(id)

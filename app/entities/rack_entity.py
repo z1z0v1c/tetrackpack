@@ -24,3 +24,11 @@ class RackEntity:
         self.number_of_units = number_of_units
         self.max_power_consumption = max_power_consumption
         self.devices = devices
+
+    def has_enough_units(self, needed_units: int) -> bool:
+        used_units = sum(device.number_of_units for device in self.devices)
+        return used_units + needed_units <= self.number_of_units
+    
+    def has_enough_power(self, needed_power: int) -> bool:
+        used_power = sum(device.power_consumption for device in self.devices)
+        return used_power + needed_power <= self.max_power_consumption
