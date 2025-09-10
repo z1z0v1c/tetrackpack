@@ -4,6 +4,7 @@ from typing import Annotated, Optional
 
 from app.entities import DeviceEntity
 
+
 class DeviceType(str, Enum):
     SERVER = "server"
     SWITCH = "switch"
@@ -33,7 +34,7 @@ class DeviceUpdateRequest(BaseModel):
 
     def to_entity(self) -> DeviceEntity:
         return DeviceEntity(**self.model_dump())
-    
+
 
 class DeviceFullResponse(BaseModel):
     id: int
@@ -45,3 +46,8 @@ class DeviceFullResponse(BaseModel):
     device_type: DeviceType
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class DeviceSimpleResponse(BaseModel):
+    id: int
+    detail: str

@@ -37,6 +37,5 @@ class DeviceService:
         if not db_model:
             return None
 
-        await self.repository.delete(db_model)
+        return await self.repository.delete(db_model)
 
-        return db_model
