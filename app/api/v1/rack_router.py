@@ -3,17 +3,24 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.services import RackService
 from app.injection import get_rack_service
-from app.models.schemas import RackResponse, RackLayoutsResponse, RackCreateRequest, RackUpdateRequest, RackLayoutRequest
+from app.models.schemas import (
+    RackFullResponse,
+    RackLayoutsResponse,
+    RackCreateRequest,
+    RackUpdateRequest,
+    RackLayoutRequest,
+)
 
 
 router = APIRouter()
 
 
-@router.post("/", response_model=RackResponse)
+@router.post("/", response_model=RackFullResponse)
 async def create_rack(
     rack: RackCreateRequest, service: RackService = Depends(get_rack_service)
 ):
     return await service.create_rack(rack)
+
 
 @router.post("/layout", response_model=RackLayoutsResponse)
 async def suggest_layout(
@@ -26,14 +33,15 @@ async def suggest_layout(
 
     return layout
 
-@router.get("/", response_model=List[RackResponse])
+
+@router.get("/", response_model=List[RackFullResponse])
 async def get_all_racks(
     service: RackService = Depends(get_rack_service), skip: int = 0, limit: int = 100
 ):
     return await service.get_all_racks(skip=skip, limit=limit)
 
 
-@router.get("/{id}", response_model=RackResponse)
+@router.get("/{id}", response_model=RackFullResponse)
 async def get_rack_by_id(id: int, service: RackService = Depends(get_rack_service)):
     rack = await service.get_rack(id)
     if not rack:
@@ -42,7 +50,7 @@ async def get_rack_by_id(id: int, service: RackService = Depends(get_rack_servic
     return rack
 
 
-@router.put("/{id}", response_model=RackResponse)
+@router.put("/{id}", response_model=RackFullResponse)
 async def update_rack_by_id(
     id: int, rack: RackUpdateRequest, service: RackService = Depends(get_rack_service)
 ):
@@ -64,8 +72,9 @@ async def place_device(
 
     if not device:
         raise HTTPException(status_code=404, detail="Rack or device not found")
-    
+
     return {"message": "Device placed successfully"}
+
 
 @router.delete("/{id}")
 async def delete_rack_by_id(id: int, service: RackService = Depends(get_rack_service)):

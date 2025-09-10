@@ -1,18 +1,16 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.entities import RackEntity
 
 
-class RackBase(BaseModel):
+class RackCreateRequest(BaseModel):
     name: str
     description: Optional[str] = None
     serial_number: str
     number_of_units: int
     max_power_consumption: int
 
-
-class RackCreateRequest(RackBase):
     def to_entity(self) -> RackEntity:
         return RackEntity(**self.model_dump())
 
@@ -27,25 +25,32 @@ class RackUpdateRequest(BaseModel):
     def to_entity(self) -> RackEntity:
         return RackEntity(**self.model_dump())
 
+
 class RackLayoutRequest(BaseModel):
     rack_ids: List[int]
     device_ids: List[int]
 
 
-class RackResponse(RackBase):
+class RackFullResponse(BaseModel):
     id: int
+    name: str
+    description: Optional[str] = None
+    serial_number: str
+    number_of_units: int
+    max_power_consumption: int
+
+    model_config = ConfigDict(from_attributes=True)
 
     @classmethod
     def from_entity(cls, entity: RackEntity):
         return cls(**entity.__dict__)
 
-    class Config:
-        orm_mode = True
 
 class RackLayoutResponse(BaseModel):
     rack_id: int
     devices: List[int]
-    utilization: float  # percentage 0.0 - 100.0
+    utilization: float
+
 
 class RackLayoutsResponse(BaseModel):
     layout: List[RackLayoutResponse]

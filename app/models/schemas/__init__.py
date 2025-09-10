@@ -8,7 +8,7 @@ from .rack_schemas import (
     RackCreateRequest,
     RackUpdateRequest,
     RackLayoutRequest,
-    RackResponse,
+    RackFullResponse,
     RackLayoutsResponse,
 )
 
@@ -20,6 +20,6 @@ __all__ = [
     "RackCreateRequest",
     "RackUpdateRequest",
     "RackLayoutRequest",
-    "RackResponse",
+    "RackFullResponse",
     "RackLayoutsResponse",
 ]
