@@ -1,3 +1,4 @@
+from typing import List
 from sqlmodel import Session, select
 
 from app.models.db_models import Device
@@ -22,6 +23,10 @@ class DeviceSqlRepository(DeviceRepository):
     async def get_by_id(self, device_id: int):
         devices = await self.session.exec(select(Device).where(Device.id == device_id))
         return devices.first()
+
+    async def get_by_ids(self, device_ids: List[int]):
+        result = await self.session.exec(select(Device).where(Device.id.in_(device_ids)))
+        return result.all()
 
     async def delete(self, device: Device):
         await self.session.delete(device)

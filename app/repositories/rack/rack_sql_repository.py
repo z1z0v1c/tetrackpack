@@ -1,3 +1,4 @@
+from typing import List
 from sqlmodel import Session, select
 
 from app.models.db_models import Rack
@@ -22,6 +23,10 @@ class RackSqlRepository(RackRepository):
     async def get_by_id(self, rack_id: int):
         racks = await self.session.exec(select(Rack).where(Rack.id == rack_id))
         return racks.first()
+
+    async def get_by_ids(self, rack_ids: List[int]):
+        result = await self.session.exec(select(Rack).where(Rack.id.in_(rack_ids)))
+        return result.all()
 
     async def delete(self, rack: Rack):
         await self.session.delete(rack)

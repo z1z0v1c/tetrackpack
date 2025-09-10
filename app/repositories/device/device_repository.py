@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from app.models.db_models import Device
 
@@ -14,6 +15,10 @@ class DeviceRepository(ABC):
 
     @abstractmethod
     def get_by_id(self, device_id: int):
+        pass
+
+    @abstractmethod
+    def get_by_ids(self, device_ids: List[int]):
         pass
 
     @abstractmethod
