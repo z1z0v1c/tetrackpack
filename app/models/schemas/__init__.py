@@ -1,4 +1,4 @@
-from .device_schemas import DeviceCreate, DeviceUpdate, DeviceResponse
+from .device_schemas import DeviceCreateRequest, DeviceUpdateRequest, DeviceFullResponse
 from .rack_schemas import (
     RackCreateRequest,
     RackUpdateRequest,
@@ -8,9 +8,9 @@ from .rack_schemas import (
 )
 
 __all__ = [
-    "DeviceCreate",
-    "DeviceUpdate",
-    "DeviceResponse",
+    "DeviceCreateRequest",
+    "DeviceUpdateRequest",
+    "DeviceFullResponse",
     "RackCreateRequest",
     "RackUpdateRequest",
     "RackLayoutRequest",

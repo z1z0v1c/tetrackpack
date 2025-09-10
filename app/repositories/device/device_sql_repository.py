@@ -20,7 +20,7 @@ class DeviceSqlRepository(DeviceRepository):
             await self.session.rollback()
             raise DatabaseError("Provided serial number already exists")
 
-        return device.id  # just for now
+        return device.id
 
     async def get_all(self, skip: int, limit: int):
         devices = await self.session.exec(select(Device).offset(skip).limit(limit))
@@ -39,3 +39,5 @@ class DeviceSqlRepository(DeviceRepository):
     async def delete(self, device: Device):
         await self.session.delete(device)
         await self.session.commit()
+
+        return device.id

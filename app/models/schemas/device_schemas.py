@@ -1,9 +1,8 @@
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Annotated, Optional
 
 from app.entities import DeviceEntity
-
 
 class DeviceType(str, Enum):
     SERVER = "server"
@@ -13,7 +12,7 @@ class DeviceType(str, Enum):
     OTHER = "other"
 
 
-class DeviceBase(BaseModel):
+class DeviceCreateRequest(BaseModel):
     name: str
     description: Optional[str] = None
     serial_number: str
@@ -21,13 +20,11 @@ class DeviceBase(BaseModel):
     power_consumption: Annotated[int, Field(ge=10)]
     device_type: DeviceType
 
-
-class DeviceCreate(DeviceBase):
     def to_entity(self) -> DeviceEntity:
         return DeviceEntity(**self.model_dump())
 
 
-class DeviceUpdate(BaseModel):
+class DeviceUpdateRequest(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     serial_number: Optional[str] = None
@@ -36,14 +33,15 @@ class DeviceUpdate(BaseModel):
 
     def to_entity(self) -> DeviceEntity:
         return DeviceEntity(**self.model_dump())
+    
 
-
-class DeviceResponse(DeviceBase):
+class DeviceFullResponse(BaseModel):
     id: int
+    name: str
+    description: Optional[str]
+    serial_number: str
+    number_of_units: int
+    power_consumption: int
+    device_type: DeviceType
 
-    @classmethod
-    def from_entity(cls, entity: DeviceEntity):
-        return cls(**entity.__dict__)
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
