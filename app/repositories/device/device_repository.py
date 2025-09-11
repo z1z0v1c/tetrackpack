@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from app.models.db_models import Device
+from app.models.db_models import DeviceModel
 
 
 class DeviceRepository(ABC):
     @abstractmethod
-    def create_or_update(self, device: Device):
+    def create_or_update(self, device: DeviceModel):
         pass
 
     @abstractmethod
@@ -22,5 +22,5 @@ class DeviceRepository(ABC):
         pass
 
     @abstractmethod
-    def delete(self, device: Device):
+    def delete(self, device: DeviceModel):
         pass

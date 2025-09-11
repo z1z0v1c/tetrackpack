@@ -1,64 +1,64 @@
 import pytest
-from app.models.db_models import Rack, Device, DeviceType
+from app.models.db_models import RackModel, DeviceModel, DeviceType
 from app.models.schemas import RackLayoutsResponse
 
 
 @pytest.fixture
 def sample_racks():
     return [
-        Rack(id=1, name="Rack A", number_of_units=42, max_power_consumption=5000),
-        Rack(id=2, name="Rack B", number_of_units=48, max_power_consumption=6000),
-        Rack(id=3, name="Rack C", number_of_units=36, max_power_consumption=4000),
-        Rack(id=4, name="Rack D", number_of_units=24, max_power_consumption=3000),
+        RackModel(id=1, name="Rack A", number_of_units=42, max_power_consumption=5000),
+        RackModel(id=2, name="Rack B", number_of_units=48, max_power_consumption=6000),
+        RackModel(id=3, name="Rack C", number_of_units=36, max_power_consumption=4000),
+        RackModel(id=4, name="Rack D", number_of_units=24, max_power_consumption=3000),
     ]
 
 
 @pytest.fixture
 def sample_devices():
     return [
-        Device(
+        DeviceModel(
             id=1,
             name="Server A",
             number_of_units=4,
             power_consumption=2000,
             device_type=DeviceType.SERVER,
         ),
-        Device(
+        DeviceModel(
             id=2,
             name="Server B",
             number_of_units=2,
             power_consumption=800,
             device_type=DeviceType.SERVER,
         ),
-        Device(
+        DeviceModel(
             id=3,
             name="Server C",
             number_of_units=1,
             power_consumption=100,
             device_type=DeviceType.SERVER,
         ),
-        Device(
+        DeviceModel(
             id=4,
             name="Storage A",
             number_of_units=3,
             power_consumption=1200,
             device_type=DeviceType.STORAGE,
         ),
-        Device(
+        DeviceModel(
             id=5,
             name="Storage B",
             number_of_units=6,
             power_consumption=1800,
             device_type=DeviceType.STORAGE,
         ),
-        Device(
+        DeviceModel(
             id=6,
             name="Switch A",
             number_of_units=1,
             power_consumption=300,
             device_type=DeviceType.SWITCH,
         ),
-        Device(
+        DeviceModel(
             id=7,
             name="Router A",
             number_of_units=1,
@@ -129,11 +129,11 @@ async def test_suggest_layout_units_constraint(
     rack_service, mock_rack_repository, mock_device_repository
 ):
     small_rack = [
-        Rack(id=1, name="Small Rack", number_of_units=3, max_power_consumption=5000)
+        RackModel(id=1, name="Small Rack", number_of_units=3, max_power_consumption=5000)
     ]
     devices = [
-        Device(id=1, name="Device A", number_of_units=2, power_consumption=500),
-        Device(id=2, name="Device B", number_of_units=2, power_consumption=600),
+        DeviceModel(id=1, name="Device A", number_of_units=2, power_consumption=500),
+        DeviceModel(id=2, name="Device B", number_of_units=2, power_consumption=600),
     ]
 
     mock_rack_repository.get_by_ids.return_value = small_rack
@@ -150,11 +150,11 @@ async def test_suggest_layout_power_constraint(
     rack_service, mock_rack_repository, mock_device_repository
 ):
     small_racks = [
-        Rack(id=1, name="Small Rack", number_of_units=10, max_power_consumption=1000)
+        RackModel(id=1, name="Small Rack", number_of_units=10, max_power_consumption=1000)
     ]
     devices = [
-        Device(id=1, name="Device A", number_of_units=2, power_consumption=800),
-        Device(id=2, name="Device B", number_of_units=2, power_consumption=900),
+        DeviceModel(id=1, name="Device A", number_of_units=2, power_consumption=800),
+        DeviceModel(id=2, name="Device B", number_of_units=2, power_consumption=900),
     ]
 
     mock_rack_repository.get_by_ids.return_value = small_racks

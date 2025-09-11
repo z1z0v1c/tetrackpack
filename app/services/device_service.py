@@ -1,4 +1,4 @@
-from app.models.db_models import Device
+from app.models.db_models import DeviceModel
 from app.repositories import DeviceRepository
 from app.models.schemas import (
     DeviceCreateRequest,
@@ -23,7 +23,7 @@ class DeviceService:
         return DeviceFullResponse.model_validate(db_model)
 
     async def create_device(self, data: DeviceCreateRequest):
-        db_model = Device.from_entity(data.to_entity())
+        db_model = DeviceModel.from_entity(data.to_entity())
         return await self.repository.create_or_update(db_model)
 
     async def update_device(self, id: int, data: DeviceUpdateRequest):

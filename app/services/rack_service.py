@@ -1,5 +1,5 @@
 from typing import List
-from app.models.db_models import Rack
+from app.models.db_models import RackModel
 from app.models.schemas.rack_schemas import RackLayoutResponse, RackLayoutsResponse
 from app.repositories import RackRepository, DeviceRepository
 from app.models.schemas import RackCreateRequest, RackFullResponse, RackUpdateRequest
@@ -13,7 +13,7 @@ class RackService:
         self.device_repository = device_repository
 
     async def create_rack(self, data: RackCreateRequest):
-        db_model = Rack.from_entity(data.to_entity())
+        db_model = RackModel.from_entity(data.to_entity())
         return await self.rack_repository.create_or_update(db_model)
 
     async def get_all_racks(self, skip: int, limit: int):

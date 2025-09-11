@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from app.models.db_models import Rack
+from app.models.db_models import RackModel
 
 
 class RackRepository(ABC):
     @abstractmethod
-    def create_or_update(self, rack: Rack):
+    def create_or_update(self, rack: RackModel):
         pass
 
     @abstractmethod
@@ -22,5 +22,5 @@ class RackRepository(ABC):
         pass
 
     @abstractmethod
-    def delete(self, rack: Rack):
+    def delete(self, rack: RackModel):
         pass
