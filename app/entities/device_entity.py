@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 
+# Could be deleted, do not encapsulates any bussiness logic at the moment
+# Kept for consistency with RackEntity
 @dataclass
 class DeviceEntity:
     def __init__(

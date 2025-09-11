@@ -6,3 +6,4 @@ psycopg2-binary
 asyncpg
 pytest
 pytest-asyncio
+uvicorn

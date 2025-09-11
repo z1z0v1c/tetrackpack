@@ -4,10 +4,10 @@ from sqlmodel import Session, select
 
 from app.exceptions import DatabaseError
 from app.models.db_models import RackModel
-from app.repositories import RackRepository
+from app.repositories import AbstractRepository
 
 
-class RackSqlRepository(RackRepository):
+class RackSqlRepository(AbstractRepository):
     def __init__(self, session: Session):
         self.session = session
 

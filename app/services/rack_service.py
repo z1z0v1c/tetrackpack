@@ -1,13 +1,13 @@
 from typing import List
 from app.models.db_models import RackModel
 from app.models.schemas.rack_schemas import RackLayoutResponse, RackLayoutsResponse
-from app.repositories import RackRepository, DeviceRepository
+from app.repositories import AbstractRepository
 from app.models.schemas import RackCreateRequest, RackFullResponse, RackUpdateRequest
 
 
 class RackService:
     def __init__(
-        self, rack_repository: RackRepository, device_repository: DeviceRepository
+        self, rack_repository: AbstractRepository, device_repository: AbstractRepository
     ):
         self.rack_repository = rack_repository
         self.device_repository = device_repository

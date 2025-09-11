@@ -4,10 +4,10 @@ from sqlmodel import Session, select
 
 from app.exceptions import DatabaseError
 from app.models.db_models import DeviceModel
-from app.repositories import DeviceRepository
+from app.repositories import AbstractRepository
 
 
-class DeviceSqlRepository(DeviceRepository):
+class DeviceSqlRepository(AbstractRepository):
     def __init__(self, session: Session):
         self.session = session
 

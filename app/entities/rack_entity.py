@@ -4,6 +4,8 @@ from typing import List, Optional
 from app.entities import DeviceEntity
 
 
+# Should encapsulate more bussiness logic, if possible, especially for suggested layout algorithm
+# Also needs some refactoring
 @dataclass
 class RackEntity:
     def __init__(
@@ -28,7 +30,7 @@ class RackEntity:
     def has_enough_units(self, needed_units: int) -> bool:
         used_units = sum(device.number_of_units for device in self.devices)
         return used_units + needed_units <= self.number_of_units
-    
+
     def has_enough_power(self, needed_power: int) -> bool:
         used_power = sum(device.power_consumption for device in self.devices)
         return used_power + needed_power <= self.max_power_consumption

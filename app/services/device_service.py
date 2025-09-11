@@ -1,5 +1,5 @@
 from app.models.db_models import DeviceModel
-from app.repositories import DeviceRepository
+from app.repositories import AbstractRepository
 from app.models.schemas import (
     DeviceCreateRequest,
     DeviceFullResponse,
@@ -8,7 +8,7 @@ from app.models.schemas import (
 
 
 class DeviceService:
-    def __init__(self, repository: DeviceRepository):
+    def __init__(self, repository: AbstractRepository):
         self.repository = repository
 
     async def get_all_devices(self, skip: int, limit: int):
