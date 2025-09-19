@@ -1,6 +1,6 @@
 from fastapi import Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.config import settings
 from app.repositories import (
@@ -15,14 +15,12 @@ engine = create_async_engine(settings.DATABASE_URL, echo=True)
 
 
 async def get_db_session():
-    async with AsyncSession() as session:
+    async with AsyncSession(engine) as session:
         try:
             yield session
         except Exception:
             await session.rollback()
             raise
-        finally:
-            await session.close()
 
 def get_device_repository(db_session: AsyncSession = Depends(get_db_session)):
     return DeviceSqlRepository(db_session)
