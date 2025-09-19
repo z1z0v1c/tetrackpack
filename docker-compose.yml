@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:13
+    container_name: tetrackpack_db
+    environment:
+      POSTGRES_USER: tetrackpack_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tetrackpack_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tetrackpack_user -d tetrackpack_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: tetrackpack_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://tetrackpack_user:password@db:5432/tetrackpack_db
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    command: >
+      bash -c "sleep 5 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload"
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,2 +1,2 @@
 # tetrackpack
-Data center infrastructure manager
+Data Center Infrastructure Manager API
