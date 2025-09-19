@@ -15,10 +15,10 @@ from app.services import DeviceService
 router = APIRouter()
 
 
-@router.post("/", response_model=DeviceSimpleResponse)
+@router.post("/")
 async def create_device(
     data: DeviceCreateRequest, service: DeviceService = Depends(get_device_service)
-):
+) -> DeviceSimpleResponse:
     try:
         device_id = await service.create_device(data)
     except DatabaseError as error:
@@ -27,19 +27,19 @@ async def create_device(
     return {"id": device_id, "detail": "Device created successfully"}
 
 
-@router.get("/", response_model=List[DeviceFullResponse])
+@router.get("/")
 async def get_all_devices(
     skip: int = 0,
     limit: int = 100,
     service: DeviceService = Depends(get_device_service),
-):
+) -> List[DeviceFullResponse]:
     return await service.get_all_devices(skip, limit)
 
 
-@router.get("/{id}", response_model=DeviceFullResponse)
+@router.get("/{id}")
 async def get_device_by_id(
     id: int, service: DeviceService = Depends(get_device_service)
-):
+) -> DeviceFullResponse:
     device = await service.get_device(id)
     if not device:
         raise HTTPException(status_code=404, detail="Device not found")
@@ -47,27 +47,27 @@ async def get_device_by_id(
     return device
 
 
-@router.put("/{id}", response_model=DeviceSimpleResponse)
+@router.put("/{id}")
 async def update_device_by_id(
     id: int,
     device: DeviceUpdateRequest,
     service: DeviceService = Depends(get_device_service),
-):
+) -> DeviceSimpleResponse:
     try:
         device_id = await service.update_device(id, device)
     except DatabaseError as error:
         raise HTTPException(status_code=400, detail=f"{error}")
-    
+
     if not device_id:
         raise HTTPException(status_code=404, detail="Device not found")
 
     return {"id": device_id, "detail": "Device updated successfully"}
 
 
-@router.delete("/{id}", response_model=DeviceSimpleResponse)
+@router.delete("/{id}")
 async def delete_device_by_id(
     id: int, service: DeviceService = Depends(get_device_service)
-):
+) -> DeviceSimpleResponse:
     device_id = await service.delete_device(id)
     if not device_id:
         raise HTTPException(status_code=404, detail="Device not found")

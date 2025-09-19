@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
@@ -8,10 +8,10 @@ from app.repositories import AbstractRepository
 
 
 class RackSqlRepository(AbstractRepository):
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
-    async def create_or_update(self, rack: RackModel):
+    async def create_or_update(self, rack: RackModel) -> int:
         try:
             self.session.add(rack)  # not awaitable
             await self.session.commit()
@@ -22,19 +22,19 @@ class RackSqlRepository(AbstractRepository):
 
         return rack.id
 
-    async def get_all(self, skip: int, limit: int):
+    async def get_all(self, skip: int, limit: int) -> List[RackModel]:
         racks = await self.session.exec(select(RackModel).offset(skip).limit(limit))
         return racks.all()
 
-    async def get_by_id(self, rack_id: int):
+    async def get_by_id(self, rack_id: int) -> Optional[RackModel]:
         racks = await self.session.exec(select(RackModel).where(RackModel.id == rack_id))
         return racks.first()
 
-    async def get_by_ids(self, rack_ids: List[int]):
+    async def get_by_ids(self, rack_ids: List[int]) -> List[RackModel]:
         result = await self.session.exec(select(RackModel).where(RackModel.id.in_(rack_ids)))
         return result.all()
 
-    async def delete(self, rack: RackModel):
+    async def delete(self, rack: RackModel) -> int:
         await self.session.delete(rack)
         await self.session.commit()
 

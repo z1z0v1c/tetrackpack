@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     PROJECT_DESC: str = "Data Center Infrastructure Management API"
     API_ROUTE: str = "/api/v1"
@@ -17,5 +18,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
 
 settings = Settings()

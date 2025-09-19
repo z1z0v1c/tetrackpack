@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from app.models.db_models import RackModel
 from app.models.schemas.rack_schemas import RackLayoutResponse, RackLayoutsResponse
 from app.repositories import AbstractRepository
@@ -8,28 +8,28 @@ from app.models.schemas import RackCreateRequest, RackFullResponse, RackUpdateRe
 class RackService:
     def __init__(
         self, rack_repository: AbstractRepository, device_repository: AbstractRepository
-    ):
+    ) -> None:
         self.rack_repository = rack_repository
         self.device_repository = device_repository
 
-    async def create_rack(self, data: RackCreateRequest):
+    async def create_rack(self, data: RackCreateRequest) -> int:
         db_model = RackModel.from_entity(data.to_entity())
         return await self.rack_repository.create_or_update(db_model)
 
-    async def get_all_racks(self, skip: int, limit: int):
+    async def get_all_racks(self, skip: int, limit: int) -> list[RackFullResponse]:
         db_models = await self.rack_repository.get_all(skip, limit)
         return [
             RackFullResponse.from_entity(db_model.to_entity()) for db_model in db_models
         ]
 
-    async def get_rack(self, id: int):
+    async def get_rack(self, id: int) -> Optional[RackFullResponse]:
         db_model = await self.rack_repository.get_by_id(id)
         if not db_model:
             return None
 
         return RackFullResponse.model_validate(db_model)
 
-    async def update_rack(self, rack_id: int, data: RackUpdateRequest):
+    async def update_rack(self, rack_id: int, data: RackUpdateRequest) -> Optional[int]:
         db_model = await self.rack_repository.get_by_id(rack_id)
         if not db_model:
             return None
@@ -41,7 +41,7 @@ class RackService:
 
         return await self.rack_repository.create_or_update(db_model)
 
-    async def place_device(self, id: int, device_id: int):
+    async def place_device(self, id: int, device_id: int) -> Optional[int]:
         rack_model = await self.rack_repository.get_by_id(id)
         device_model = await self.device_repository.get_by_id(device_id)
 
@@ -59,7 +59,9 @@ class RackService:
         device_model.rack_id = rack_model.id
         return await self.device_repository.update(device_model)
 
-    async def suggest_layout(self, rack_ids: List[int], device_ids: List[int]):
+    async def suggest_layout(
+        self, rack_ids: List[int], device_ids: List[int]
+    ) -> RackLayoutsResponse:
         racks = await self.rack_repository.get_by_ids(rack_ids)
         devices = await self.device_repository.get_by_ids(device_ids)
 
@@ -114,7 +116,7 @@ class RackService:
 
         return RackLayoutsResponse(layout=layouts)
 
-    async def delete_rack(self, rack_id: int):
+    async def delete_rack(self, rack_id: int) -> Optional[int]:
         db_model = await self.rack_repository.get_by_id(rack_id)
         if not db_model:
             return None

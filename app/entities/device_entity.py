@@ -17,7 +17,7 @@ class DeviceEntity:
         description: Optional[str] = None,
         rack_id: Optional[int] = None,
         **kwargs
-    ):
+    ) -> None:
         self.id = id
         self.name = name
         self.description = description

@@ -37,5 +37,5 @@ class DeviceModel(SQLModel, table=True):
         return DeviceEntity(**self.model_dump())
 
     @classmethod
-    def from_entity(cls, entity: DeviceEntity):
+    def from_entity(cls, entity: DeviceEntity) -> "DeviceModel":
         return cls(**entity.__dict__)

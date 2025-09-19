@@ -42,7 +42,7 @@ class RackFullResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     @classmethod
-    def from_entity(cls, entity: RackEntity):
+    def from_entity(cls, entity: RackEntity) -> "RackFullResponse":
         return cls(**entity.__dict__)
 
 

@@ -18,7 +18,7 @@ class RackEntity:
         description: Optional[str] = None,
         devices: Optional[List[DeviceEntity]] = [],
         **kwargs
-    ):
+    ) -> None:
         self.id = id
         self.name = name
         self.description = description

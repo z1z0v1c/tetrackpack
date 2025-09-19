@@ -26,5 +26,5 @@ class RackModel(SQLModel, table=True):
         return RackEntity(**self.model_dump())
 
     @classmethod
-    def from_entity(cls, entity: RackEntity):
+    def from_entity(cls, entity: RackEntity) -> "RackModel":
         return cls(**entity.__dict__)

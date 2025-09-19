@@ -1,25 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from sqlmodel import SQLModel
 
 class AbstractRepository(ABC):
     @abstractmethod
-    async def create_or_update(self, model: SQLModel):
+    async def create_or_update(self, model: SQLModel) -> int:
         pass
 
     @abstractmethod
-    async def get_all(self, skip: int, limit: int):
+    async def get_all(self, skip: int, limit: int) -> List[SQLModel]:
         pass
 
     @abstractmethod
-    async def get_by_id(self, id: int):
+    async def get_by_id(self, id: int) -> Optional[SQLModel]:
         pass
 
     @abstractmethod
-    async def get_by_ids(self, ids: List[int]):
+    async def get_by_ids(self, ids: List[int]) -> List[SQLModel]:
         pass
 
     @abstractmethod
-    async def delete(self, model: SQLModel):
+    async def delete(self, model: SQLModel) -> int:
         pass
